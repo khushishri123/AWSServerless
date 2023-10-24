@@ -1,0 +1,16 @@
+{
+  "name": "myserverlessapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "firstLambdaHandler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.1476.0",
+    "axios": "^1.5.1"
+  }
+}
