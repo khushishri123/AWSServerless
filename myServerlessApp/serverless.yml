@@ -1,0 +1,52 @@
+service: myserverlessapp
+
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: ap-south-1
+  iamRoleStatements:
+    - Effect: Allow
+      Action: 
+        - dynamodb:*
+      Resource: 
+        - arn:aws:dynamodb:ap-south-1:509741009751:table/dummyData
+  
+stepFunctions:
+  stateMachines:
+    myStepFunction:
+      events:
+        - http:
+            path: gofunction
+            method: GET 
+      definition:
+        StartAt: Lambda1
+        States:
+          Lambda1:
+            Type: Task
+            Resource:
+             Fn::GetAtt: [lambdaFunction1,Arn]
+            Next: Lambda2
+          Lambda2:
+            Type: Task
+            Resource:
+             Fn::GetAtt: [lambdaFunction2,Arn]
+            End: true
+          
+functions:
+  hello:
+    handler: handler.hello
+  lambdaFunction1:
+    handler: firstLambdaHandler.handler
+    package: 
+      include:
+        - node_modules/**
+  lambdaFunction2:
+    handler: secondLambdaHandler.handler
+    package: 
+      include:
+        - node_modules/**
+
+plugins:
+  - serverless-step-functions
